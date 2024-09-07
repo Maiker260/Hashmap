@@ -38,6 +38,10 @@ class HashMap {
     set(key, value) {
         let hashCodeSet = this.hash(key);
         
+        if (hashCodeSet < 0 || hashCodeSet >= this.bucket.length) {
+            throw new Error("Trying to access index out of bound");
+        }
+        
         this.resize();
 
         this.bucket[hashCodeSet] = value;
