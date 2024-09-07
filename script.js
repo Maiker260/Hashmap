@@ -19,19 +19,16 @@ class HashMap {
 
     // Resize Bucket Size if it is almost Full Size
     resize() {
-        const bucketLength = this.length();
+        const oldBucket = this.bucket;
+        this.bucketSize *= 2;
+        this.bucket = new Array(this.bucketSize).fill(null);
         
-        // Calculate when the bucket is almost full size
-        let loadFactor = this.bucketSize * this.load;
-
-        if (bucketLength >= loadFactor) {
-            const oldBucket = this.bucket;
-            this.bucketSize *= 2;
-            this.bucket = new Array(this.bucketSize).fill(null);
-
-            oldBucket.forEach(entry => {
-                this.bucket.push(entry)
-            })
+        for (let bucketArray of oldBucket) {
+            if (bucketArray) {
+                for (let [key, value] of bucketArray) {
+                    this.set(key, value);
+                }
+            }
         }
     }
 
